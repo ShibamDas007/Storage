@@ -1,70 +1,59 @@
-// pages/Dashboard.jsx
-import React from 'react';
-import { SearchIcon } from '../components/Icons';
+import Sidebar from "../components/Sidebar";
+import { FaQuestionCircle } from "react-icons/fa";
+import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
+import { useState } from "react";
+import { DesktopSearchBar, MobileSearchBar } from "../components/SearchBar";
+import { Card } from "../components/DynamicCards";
 
-const Dashboard = () => {
-  const recentSearches = [
-    { query: 'Machine learning algorithms', time: '2 mins ago' },
-    { query: 'Neural network optimization', time: 'Yesterday' },
-    { query: 'Data visualization techniques', time: 'Apr 8' },
-  ];
+function DashBoard() {
+    const [mobilesidebarOpen, setmobileSidebarOpen] = useState(false);
 
-  return (
-    <div className="flex-1 px-4 md:px-10 py-8 overflow-y-auto">
-      {/* Hero Section */}
-      <div className="text-center">
-        <h1 className="text-3xl font-bold text-slate-800 mb-3">
-          Discover the Power of AI
-        </h1>
-        <p className="text-slate-500">
-          Intelligent search that understands your needs
-        </p>
-      </div>
+    const toggleMobileSidebar = () => {
+        setmobileSidebarOpen(!mobilesidebarOpen)
 
-      {/* Neural Network Visualization */}
-      <div className="flex justify-center mb-12 max-w-md mx-auto">
-        <img src="src\assets\nuralnetwork_cleaned.svg" className='bg-cover w-[20%]'/>
-      </div>
+    }
 
-      {/* Search Bar - Fixed positioning with flex layout */}
-      <div className="max-w-xl mx-auto relative mb-16">
-        <div className="bg-white rounded-full shadow-md flex items-center p-3">
-          <div className="ml-3 mr-4 flex-shrink-0">
-            <SearchIcon />
-          </div>
-          <input
-            type="text"
-            placeholder="Ask me anything..."
-            className="flex-1 min-w-0 bg-transparent outline-none text-slate-800 placeholder-slate-400"
-          />
-          <div className="flex-shrink-0 ml-2">
-            <button className="w-10 h-10 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white">
-              <span className="font-bold text-lg">+</span>
-            </button>
-          </div>
+    return (
+        <div className="bg-[#202222] absolute inset-0 overflow-hidden flex p-2 font-ccode text-white">
+            <Sidebar />
+            <div className={`${mobilesidebarOpen ? "translate-x-0" : "-translate-x-full"} fixed inset-0 bg-[#202222] z-50 md:hidden w-[70%] h-full transform transition-transform ease-in-out duration-1000`}>
+                <div className="">
+                    <Sidebar isMobile={true}  externalToggle={toggleMobileSidebar}/>
+                </div>
+            </div>
+            {mobilesidebarOpen && (
+                <div className="fixed inset-0 bg-black/50 md:hidden" onClick={toggleMobileSidebar}></div>
+            )}
+            <div className="bg-[#191A1A] flex flex-col w-full h-full">
+                <div className="w-full h-16 fixed md:hidden">
+                    <div className="ml-4 flex gap-2 text-white text-lg items-center w-full py-4">
+                        <a href="#" className="md:hidden text-xl text-[#20B8CD]" onClick={toggleMobileSidebar}><AiOutlineMenu /></a>
+                        <a href="" className="">Quark</a>
+                    </div>
+                </div>
+                <div className="bg-[#191A1A] w-full h-full rounded-lg border border-[#2D2F2F] gap-6 flex flex-col md:justify-center justify-between items-center shadow-lg">
+                    <div className="md:hidden"></div>
+                    <div className="text-white text-xl md:text-4xl font-mono font-semibold flex flex-">
+                        Welcome, Shibam Das!
+                    </div>
+                    <div className="md:block hidden w-full md:w-1/2">
+                        <DesktopSearchBar />
+                    </div>
+                    <div className="md:hidden w-full">
+                        <MobileSearchBar />
+                    </div>
+                    <div className="hidden md:block w-[50%]">
+                        <Card/>
+                    </div>
+                </div>
+            </div>
+            <div className="hidden md:block absolute bottom-4 right-4 text-white text-lg cursor-pointer hover:opacity-50 transition-all mb-2 mr-2">
+                <a href="#help" title="Help / Support">
+                    <FaQuestionCircle />
+                </a>
+            </div>
         </div>
-      </div>
+    )
+}
 
-      {/* Recent Searches */}
-      <div className="max-w-xl mx-auto">
-        <h2 className="text-lg font-bold text-slate-800 mb-4 text-center">
-          Recent Searches
-        </h2>
-        
-        {recentSearches.map((search, index) => (
-          <div 
-            key={index}
-            className="bg-white rounded-lg shadow-md p-4 mb-4 flex justify-between items-center cursor-pointer hover:shadow-lg transition-shadow"
-            onClick={() => console.log(`Selected search: ${search.query}`)}
-          >
-            <span className="text-slate-800">{search.query}</span>
-            <span className="text-sm text-slate-400">{search.time}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export default Dashboard;
-
+export default DashBoard;
